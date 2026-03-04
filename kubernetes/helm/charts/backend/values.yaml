@@ -1,12 +1,12 @@
 replicaCount: 1
 
 image:
-  repository: 975050024946.dkr.ecr.ap-southeast-1.amazonaws.com/shopnow/backend
+  repository: 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-b:backend
   tag: latest
   pullPolicy: IfNotPresent
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 5000
 
 config:

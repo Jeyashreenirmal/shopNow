@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/aryanm12/shopNow'
+    repoURL: 'https://github.com/Jeyashreenirmal/shopNow.git'
     targetRevision: HEAD
     path: kubernetes/helm/charts/admin
     helm:
@@ -16,7 +16,7 @@ spec:
       releaseName: admin
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: shopnow-demo
+    namespace: shopnow-jsree
   syncPolicy:
     automated:
       prune: true

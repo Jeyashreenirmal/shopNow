@@ -1,4 +1,4 @@
-
+  
 # 🛒 ShopNow E-Commerce - Kubernetes Learning Project
 
 ShopNow is a **Kubernetes learning project** built around a full-stack MERN e-commerce application:
