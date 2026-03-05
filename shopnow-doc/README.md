@@ -37,10 +37,10 @@ next step into install the pre-request, storage (EBS-CSI), ingress controller an
   ![applying the storage yaml ](screenshots/storageclass-yml-apply.png)
 
 verify the storageclass, command used kubectl get storageclass
-  ![verify the storageclass ](screenshots\get-storage.png)
+  ![verify the storageclass ](screenshots/get-storage.png)
 
 installed ingress controller
-  ![ingress controller  ](screenshots\ingress-controller.png)
+  ![ingress controller  ](screenshots/ingress-controller.png)
 
 deployed metric-server yaml file
   ![metric-server creation ](screenshots\metric-server.png)
