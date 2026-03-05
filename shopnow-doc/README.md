@@ -34,54 +34,72 @@ next step into install the pre-request, storage (EBS-CSI), ingress controller an
  ![ebs csi role](screenshots/ebs-csi-role.png)
 
  deployed the storage class yaml file, command kubectl apply -f <file name>
+
   ![applying the storage yaml ](screenshots/storageclass-yml-apply.png)
 
 verify the storageclass, command used kubectl get storageclass
+
   ![verify the storageclass ](screenshots/get-storage.png)
 
 installed ingress controller
+
   ![ingress controller  ](screenshots/ingress-controller.png)
 
 deployed metric-server yaml file
-  ![metric-server creation ](screenshots\metric-server.png)
 
-deployed namespace 
-  ![namespace ](screenshots\namespace.png)
+  ![metric-server creation ](screenshots/metric-server.png)
+
+deployed namespace
+
+  ![namespace ](screenshots/namespace.png)
 
 next step is to create the mongoDB pod, applied deployment and service yaml file
-  ![applying mongo pod file ](screenshots\mongo-pod-file.png)
-  ![mongo pod file ](screenshots\mongopod.png)
+
+  ![applying mongo pod file ](screenshots/mongo-pod-file.png)
+
+  ![mongo pod file ](screenshots/mongopod.png)
 
 next step isto deploy the backend application, to acheive this I first deployed the configmap, secrets, deployment, service and hpa respectively. , I faced CrashLoopbackoff error, while I checked the logs, the error was host not found in upstream "backend-service", that is backed container is trying to connect to backend-service but kubernetes cannot resolve this service name, I opened the service.yml file of backend and name the service to backend-service, then re-applied the service.yml file and the pod came to runnign state. 
-  ![backend pod ](screenshots\backendpod.png)
-  ![backend hpa ](screenshots\backend-hpa.png)
+
+  ![backend pod ](screenshots/backendpod.png)
+
+  ![backend hpa ](screenshots/backend-hpa.png)
 
 next, I deployed the frontend application, in the order of configmap, secrets, deployment, service, and hpa respectively. faced issue on CrashLoopBackoff, reason host not found in upstream "backend". so I created a new service.yml for frontend application naming service name as backend and then the issue was resolved. 
-  ![frontend pod ](screenshots\frontendpod.png)
-  ![frontend pod hpa ](screenshots\frontend-hpa.png)
+
+  ![frontend pod ](screenshots/frontendpod.png)
+
+  ![frontend pod hpa ](screenshots/frontend-hpa.png)
 
 deployed admin application
-![admin pod ](screenshots\adminpod.png)
-![admin pod hpa ](screenshots\admin-hpa.png)
+
+![admin pod ](screenshots/adminpod.png)
+
+![admin pod hpa ](screenshots/admin-hpa.png)
 
 deploying ingress, after deploying ingress, ingress acts as a smart routing, one entry point, it routes multiple service. 
-![ingess](screenshots\ingress.png)
-![ingess path 1](screenshots\ingress-path1.png)
-![ingess path 2](screenshots\ingress-path2.png)
+![ingess](screenshots/ingress.png)
+
+![ingess path 1](screenshots/ingress-path1.png)
+
+![ingess path 2](screenshots/ingress-path2.png)
 
 deployed daemonset
-![daemonset](screenshots\daemonset.png)
+
+![daemonset](screenshots/daemonset.png)
 
 user creation for backend, 
-![user creation for mongo pod](screenshots\usercreation.png)
+
+![user creation for mongo pod](screenshots/usercreation.png)
 
 
 To automate the build and deployment process, I followed the follwing way
 
 Push code ---> GitHub ---> Jenkins Pipeline ---> Build Docker image ---> Push image to ECR ---> update YAMl in Git ---> Argocd detects change ---> Deploy to Kubernetes. 
 
-![jenkins pipeline](screenshots\jenkins.png)
-![argocd](screenshots\argocd.png)
+![jenkins pipeline](screenshots/jenkins.png)
+
+![argocd](screenshots/argocd.png)
 
 
 
