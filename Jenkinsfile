@@ -54,7 +54,7 @@ pipeline {
                 dir('admin') {
                     sh '''
                     docker build -t jsree-shopnow-a:admin .
-                    docker tag shopnow-jsree-a:admin 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-a:admin
+                    docker tag jsree-shopnow-a:admin 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-a:admin
                     docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-a:admin
                     '''
                 }
