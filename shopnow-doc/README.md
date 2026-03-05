@@ -15,3 +15,5 @@ docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-f:fronten
 
 ![Docker Push](screenshots/frontend_docker.png)
 
+in same way was followed for other two services (backend and admin)
+![ECR repo](screenshots/ecr-repo.png)
