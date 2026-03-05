@@ -1,71 +1,74 @@
 pipeline {
-  agent any
+    agent any
 
-  stages {
+    stages {
 
-    stage('Checkout') {
-      steps {
-        git branch: 'main',
-            url: 'https://github.com/Jeyashreenirmal/shopNow.git',
-            credentialsId: 'github-tokenjsree'
-      }
-    }
-     stage('Login to AWS ECR') {
-      steps {
-        withCredentials([[
-          $class: 'AmazonWebServicesCredentialsBinding',
-          credentialsId: 'aws-credentials'
-        ]]) {
-          sh '''
-            aws ecr get-login-password --region us-east-1 | \
-            docker login --username AWS --password-stdin \
-            975050024946.dkr.ecr.us-east-1.amazonaws.com
-          '''
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/Jeyashreenirmal/shopNow.git',
+                credentialsId: 'github-tokenjsree'
+            }
         }
-      }
+
+        stage('Login to AWS ECR') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-credentials'
+                ]]) {
+                    sh '''
+                    aws ecr get-login-password --region us-east-1 | \
+                    docker login --username AWS --password-stdin 975050024946.dkr.ecr.us-east-1.amazonaws.com
+                    '''
+                }
+            }
+        }
+
+        stage('Build & Push Frontend') {
+            steps {
+                dir('frontend') {
+                    sh '''
+                    docker build -t jsree-shopnow-f:frontend .
+                    docker tag jsree-shopnow-f:frontend 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-f:frontend
+                    docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-f:frontend
+                    '''
+                }
+            }
+        }
+
+        stage('Build & Push Backend') {
+            steps {
+                dir('backend') {
+                    sh '''
+                    docker build -t jsree-shopnow-b:backend .
+                    docker tag jsree-shopnow-b:backend 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-b:backend-v1
+                    docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-b:backend-v1
+                    '''
+                }
+            }
+        }
+
+        stage('Build & Push Admin') {
+            steps {
+                dir('admin') {
+                    sh '''
+                    docker build -t shopnow-jsree-a:admin .
+                    docker tag shopnow-jsree-a:admin 975050024946.dkr.ecr.us-east-1.amazonaws.com/shopnow-jsree-a:admin
+                    docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/shopnow-jsree-a:admin
+                    '''
+                }
+            }
+        }
     }
 
-    // ================= FRONTEND =================
-    stage('Build & Push Frontend') {
-      steps {
-        dir('frontend') {
-          sh '''
-            docker build -t jsree-shopnow-f:frontend .
-            docker tag jsree-shopnow-f:frontend 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-f:frontend
-            docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-f:frontend
-          '''
+    post {
+        success {
+            echo 'All services built and pushed successfully'
         }
-      }
-    }
-    stage('Build & Push backend') {
-      steps {
-        dir('backend') {
-          sh '''
-            docker build -t jsree-shopnow-b:backend-v1 .
-            docker tag jsree-shopnow-b:backend-v1 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-b:backend-v1
-            docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/jsree-shopnow-b:backend-v1
-          '''
+
+        failure {
+            echo 'Pipeline failed'
         }
-      }
     }
-    stage('Build & Push Admin Service') {
-      steps {
-        dir('admin') {
-          sh '''
-            docker build -t shopnow-jsree-a:admin .
-            docker tag shopnow-jsree-a:admin 975050024946.dkr.ecr.us-east-1.amazonaws.com/shopnow-jsree-a:admin
-            docker push 975050024946.dkr.ecr.us-east-1.amazonaws.com/shopnow-jsree-a:admin
-          '''
-        }
-      }
-    }
-     post {
-    success {
-      echo '✅ All services built and pushed successfully'
-    }
-    failure {
-      echo '❌ Pipeline failed'
-    }
-  }
-}
 }
